@@ -6,19 +6,20 @@ generar() {
         if [[ $num == "-1" ]]; then
             break
         elif [[ $num =~ ^[0-9]+$ ]]; then
-            break
+                # num=$1
+            link="https://source.unsplash.com/random/900%C3%97700/?person"
+            # output_file="scripts/imagen.jpg"
+            for ((i=1; i<=$num; i++)); do
+                # ls -l "/compartir/imagenes" 
+                wget "$link" -O "/compartir/imagenes/imagen$i.jpg"
+                echo "Descargando imagen $i"
+            done
         else
             echo "Ingresa un número válido"
         fi
         read -p "Presiona Enter para continuar..."
     done
-    # num=$1
-    link="https://source.unsplash.com/random/900%C3%97700/?person"
 
-    for ((i=1; i<=$num; i++)); do
-        # curl -s $link | grep -o 'https://images.unsplash.com/photo-[a-zA-Z0-9]*' | head -n $i | tail -n 1 | xargs wget -qO "image$i.jpg"
-        echo "Descargando imagen $i"
-    done
 } 
 
 generar_menu() {

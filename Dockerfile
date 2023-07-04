@@ -4,8 +4,8 @@ FROM alpine:latest
 # instalar dependencias para los scripts bash
 RUN apk update && apk add bash
 
-# compartir directorio de scripts
-VOLUME /scripts
+# compartir directorio
+VOLUME /compartir
 
 # iniciar el menu de opciones
-CMD ["/bin/bash", "/scripts/menu.sh"]
+CMD ["/bin/bash", "/compartir/scripts/menu.sh"]

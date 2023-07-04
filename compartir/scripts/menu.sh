@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Para dar permisos de ejecución a todos los scripts
-chmod +x scripts/*.sh
+chmod +x compartir/**/*.sh
 
 while true; do
     clear
@@ -16,7 +16,7 @@ while true; do
     read -p "Ingresa una opción: " option
 
     case $option in
-        1) scripts/generar.sh ;;
+        1) compartir/scripts/generar.sh ;;
         2) ./descomprimir.sh ;;
         3) ./procesar.sh ;;
         4) ./comprimir.sh ;;

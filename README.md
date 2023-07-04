@@ -28,4 +28,4 @@ En este repositorio encontrarán los archivos necesarios para generar un contene
   ` docker build --no-cache -t <nombre de la imagen> .`
   Por ejemplo: `docker build --no-cache -t tp-entorno .`
 - Iniciar el contenedor y compartir los scripts
-  `docker run -it -v ./scripts/:/scripts tp-entorno` (reemplazar "tp-entorno" por el nombre de la imagen)
+  `docker run -it -v ./compartir/:/compartir tp-entorno` (reemplazar "tp-entorno" por el nombre de la imagen)
