@@ -1,0 +1,3 @@
+compartir/datasets/imagenes/*
+compartir/**/*.tar.gz
+compartir/**/suma_verificacion.txt
