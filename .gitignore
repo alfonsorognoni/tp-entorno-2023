@@ -1,3 +1,6 @@
 compartir/datasets/imagenes/*
+compartir/datasets/imagenesProcesadas/*
+compartir/datasets/imagenesDescomprimidas/*
+
 compartir/**/*.tar.gz
 compartir/**/suma_verificacion.txt
