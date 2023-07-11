@@ -2,7 +2,7 @@
 FROM alpine:latest
 
 # instalar dependencias para los scripts bash
-RUN apk update && apk add bash
+RUN apk update && apk add bash imagemagick
 
 # compartir directorio
 VOLUME /compartir
