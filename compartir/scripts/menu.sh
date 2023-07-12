@@ -19,10 +19,9 @@ while true; do
         1) compartir/scripts/generar.sh ;;
         2) ./descomprimir.sh ;;
         3) compartir/scripts/procesar.sh ;;
-        4) ./comprimir.sh ;;
+        4) compartir/scripts/comprimir.sh ;;
         5) exit ;;
-        *) echo "Opción inválida" ;;
+        *) clear && echo "Opción inválida" ;;
     esac
-    clear
     read -p "Presiona Enter para continuar..."
 done
