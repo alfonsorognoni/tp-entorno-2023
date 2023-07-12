@@ -1,26 +1,36 @@
 #!/bin/bash
 
+RUTA_DATASETS=$(pwd)compartir/datasets/
+
 generar() {
     while true; do
-        read -p "Ingresa el número de imágenes a generar: (-1 para volver)" num
-        if [[ $num == "-1" ]]; then
+        read -p "Ingresa el número de imágenes a generar: (-1 para volver)" NUM
+        if [[ $NUM == "-1" ]]; then
             break
-        elif [[ $num =~ ^[0-9]+$ ]]; then
-                # num=$1
-            link="https://source.unsplash.com/random/900%C3%97700/?person"
-            # output_file="scripts/imagen.jpg"
-            for ((i=1; i<=$num; i++)); do
-                # ls -l "/compartir/imagenes" 
-                wget "$link" -O "/compartir/imagenes/imagen$i.jpg"
-                echo "Descargando imagen $i"
+        elif [[ $NUM =~ ^[0-9]+$ && $NUM -gt 0 ]]; then #Valida que sea un número entero positivo
+            LINK="https://source.unsplash.com/random/900%C3%97700/?person"
+            mkdir -p ${RUTA_DATASETS}imagenes # Crea el directorio 'imagenes' si no existe
+            
+            for ((i=1; i<=$NUM; i++)); do
+                NOMBRE=$(sed -n "$RANDOM p" ${RUTA_DATASETS}nombres.csv) #Elige un nombre aleatorio de una lista de nombres
+	            NOMBRE=$(echo $NOMBRE | cut -d ',' -f 1) #Toma lo que esta antes de la coma (Aaron Damian,85 -> Aaron Damian)
+                NOMBRE=$(echo $NOMBRE | cut -d ' ' -f 1) #Corta los espacios dentro del nombre (Aaron Damian -> Aaron)
+
+                wget "$LINK" -O "${RUTA_DATASETS}imagenes/$NOMBRE.jpg" #Genera una imagen y la guarda en la carpeta 'imagenes'
+                echo "Descargando la imagen numero $i..."
+                sleep 1 #Espera entre descarga y descarga para no saturar el servicio
             done
+            echo "Imágenes generadas. Comprimiendo..."
+            tar -czf ${RUTA_DATASETS}imagenes.tar.gz -C ${RUTA_DATASETS}imagenes *.jpg #Comprime las imagenes generadas
+            md5sum ${RUTA_DATASETS}imagenes.tar.gz > ${RUTA_DATASETS}suma_verificacion.txt #Genera el archivo de suma de verificación
+            echo "Imágenes comprimidas. Suma de verificación generada."
         else
             echo "Ingresa un número válido"
         fi
         read -p "Presiona Enter para continuar..."
     done
 
-} 
+}
 
 generar_menu() {
     clear
