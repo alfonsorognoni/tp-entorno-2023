@@ -18,7 +18,7 @@ while true; do
     case $option in
         1) compartir/scripts/generar.sh ;;
         2) ./descomprimir.sh ;;
-        3) ./procesar.sh ;;
+        3) compartir/scripts/procesar.sh ;;
         4) ./comprimir.sh ;;
         5) exit ;;
         *) echo "Opción inválida" ;;
