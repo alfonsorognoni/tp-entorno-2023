@@ -23,6 +23,7 @@ procesar() {
         fi
 
         read -p "Presiona Enter para continuar..."
+        exit 0
     done
 
 }
