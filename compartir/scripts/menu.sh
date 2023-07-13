@@ -17,7 +17,7 @@ while true; do
 
     case $option in
         1) compartir/scripts/generar.sh ;;
-        2) ./descomprimir.sh ;;
+        2) compartir/scripts/descomprimir.sh ;;
         3) compartir/scripts/procesar.sh ;;
         4) compartir/scripts/comprimir.sh ;;
         5) exit ;;
