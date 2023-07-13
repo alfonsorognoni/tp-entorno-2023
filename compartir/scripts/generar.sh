@@ -21,8 +21,9 @@ generar() {
                 sleep 1 #Espera entre descarga y descarga para no saturar el servicio
             done
             echo "Imágenes generadas. Comprimiendo..."
-            tar -czf ${RUTA_DATASETS}imagenes.tar.gz -C ${RUTA_DATASETS}imagenes *.jpg #Comprime las imagenes generadas
-            md5sum ${RUTA_DATASETS}imagenes.tar.gz > ${RUTA_DATASETS}suma_verificacion.txt #Genera el archivo de suma de verificación
+            FECHA=$(date +"%Y%m%d%H%M%S")
+            tar -czf ${RUTA_DATASETS}imagenes_${FECHA}.tar.gz -C ${RUTA_DATASETS}imagenes . #Comprime las imagenes generadas
+            md5sum ${RUTA_DATASETS}imagenes_${FECHA}.tar.gz > ${RUTA_DATASETS}suma_verificacion_${FECHA}.txt #Genera el archivo de suma de verificación
             echo "Imágenes comprimidas. Suma de verificación generada."
         else
             echo "Ingresa un número válido"
