@@ -10,10 +10,10 @@ mkdir -p $DIR_COMPRIMIR
 comprimir() {
     #valida que el directorio de imagenes procesadas exista y no este vacio
     if [[ ! -d $DIR_PROCESADAS ]]; then
-        echo "ERROR. El directorio $DIR_PROCESADAS no existe."
+        echo "ERROR. El directorio imagenesProcesadas no existe."
         exit 1
     elif [[ ! $(ls $DIR_PROCESADAS) ]]; then
-        echo "ERROR. El directorio $DIR_PROCESADAS está vacío."
+        echo "ERROR. El directorio imagenesProcesadas está vacío."
         exit 2
     else
         #crear archivo con el nombre de las imagenes descomprimidas

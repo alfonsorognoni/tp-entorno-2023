@@ -3,6 +3,12 @@
 RUTA_DATASETS=$(pwd)compartir/datasets/
 
 menu_descomprimir () {
+    # salir si no hay archivos para descomprimir
+    if ! ls ${RUTA_DATASETS}imagenes*.tar.gz >/dev/null 2>&1; then
+        echo "No hay archivos para descomprimir"
+        exit 1
+    fi
+
     # Obtener la lista de archivos existentes en el directorio actual
     archivos_gzip=$(ls ${RUTA_DATASETS}imagenes*.tar.gz)
     archivos_verificacion=$(ls ${RUTA_DATASETS}suma*.txt)
@@ -38,6 +44,11 @@ menu_descomprimir () {
                 echo "   $(echo "$archivos" | sed -n "$((i+1))p")"
             fi
         done
+        if [ $indice -eq $num_archivos ]; then
+            echo "-> [Salir]"
+        else
+            echo "   [Salir]"
+        fi
 
         echo "---------"
         echo "Utilice las teclas arriba y abajo para navegar. Presione Enter para seleccionar el archivo."
@@ -53,14 +64,20 @@ menu_descomprimir () {
                 fi
                 ;;
             "B")  # Flecha abajo
-                if [ $indice -lt $((num_archivos-1)) ]; then
+                if [ $indice -lt $((num_archivos)) ]; then
                     ((indice++))
                 fi
                 ;;
             "")  # Enter
+
+                # Si seleccionó "Salir", salir del bucle
+                if [[ $indice -eq $num_archivos ]]; then
+                    break
+                fi
                 # Obtener el nombre del archivo seleccionado
                 if [[ $zip_seleccionado == "" ]]; then
                     zip_seleccionado=$(echo "$archivos" | sed -n "$((indice+1))p")
+                    indice=0
                 else
                     verificacion_seleccionada=$(echo "$archivos" | sed -n "$((indice+1))p")
                 fi
@@ -104,7 +121,7 @@ descomprimir() {
         if [[ $(echo $(md5sum $1) | cut -d ' ' -f 1) == $(cat $2 | cut -d ' ' -f 1) ]]; then
             echo "La suma de verificación proporcionada coincide. Descomprimiendo..."
             mkdir -p ${RUTA_DATASETS}imagenesDescomprimidas #Crea un directorio donde se guardará el archivo descomprimido
-            tar -xvf ${RUTA_DATASETS}imagenes.tar.gz -C ${RUTA_DATASETS}imagenesDescomprimidas #Descomprime el archivo
+            tar -xvf $1 -C ${RUTA_DATASETS}imagenesDescomprimidas #Descomprime el archivo
             echo "Imágenes descomprimidas."
             exit 0
         else

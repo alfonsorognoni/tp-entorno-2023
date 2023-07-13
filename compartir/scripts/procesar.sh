@@ -9,8 +9,8 @@ procesar() {
         sleep 1
         # datasets/imagenesDescomprimidas tomo todas las imagenes de la carpeta cuyo nombre inicia con MAYUSCULA
         PATRON=".*/[A-Z][a-z]+\.jpg$"
-        
-        if ls ${RUTA_DATASETS}imagenesDescomprimidas/*.jpg | grep -E $PATRON 1>/dev/null 2>&1; then #Si el comando ls no produce errores
+
+        if ls ${RUTA_DATASETS}imagenesDescomprimidas/*.jpg | grep -E $PATRON >/dev/null 2>&1; then #Si el comando ls no produce errores
             mkdir -p /compartir/datasets/imagenesProcesadas # Crea el directorio 'imagenesProcesadas' si no existe
             for imagen in $(ls ${RUTA_DATASETS}imagenesDescomprimidas/*.jpg | grep -E $PATRON); do #Recorre todas las imagenes que coincidan con el patron
                 echo "Procesando $imagen..."
@@ -20,6 +20,7 @@ procesar() {
             done
         else
             echo "No se encontraron imagenes para procesar en el directorio imagenesDescomprimidas"
+            exit 1
         fi
 
         read -p "Presiona Enter para continuar..."

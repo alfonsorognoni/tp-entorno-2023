@@ -25,10 +25,13 @@ generar() {
             tar -czf ${RUTA_DATASETS}imagenes_${FECHA}.tar.gz -C ${RUTA_DATASETS}imagenes . #Comprime las imagenes generadas
             md5sum ${RUTA_DATASETS}imagenes_${FECHA}.tar.gz > ${RUTA_DATASETS}suma_verificacion_${FECHA}.txt #Genera el archivo de suma de verificación
             echo "Imágenes comprimidas. Suma de verificación generada."
+            # elimina las imagenes generadas
+            rm -rf ${RUTA_DATASETS}imagenes
         else
             echo "Ingresa un número válido"
         fi
-        read -p "Presiona Enter para continuar..."
+        # read -p "Presiona Enter para continuar..."
+        exit 0
     done
 
 }

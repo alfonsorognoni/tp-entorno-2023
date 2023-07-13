@@ -5,4 +5,4 @@ compartir/datasets/imagenesDescomprimidas/*
 compartir/**/*.tar.gz
 compartir/**/*.txt
 
-compartir/**/.DS_Store
+**/.DS_Store
