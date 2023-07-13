@@ -5,8 +5,8 @@ TUIA, Comision 1
 Integrantes:
 |Alumno|Legajo |
 |--|--|
-|Alumno1|Legajo1|
-|Alumno2|Legajo2|
+|Nancy Cima|Legajo1|
+|Alfonso Rognoni|R 4630/2|
 
 # Qué hace?
 
