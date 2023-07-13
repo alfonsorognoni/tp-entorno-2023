@@ -25,11 +25,16 @@ comprimir() {
         #crear un archivo con la lista de nombres validos que terminan en a.jpg
         ls $DIR_PROCESADAS | grep -E '^[A-Z][a-z]+a\.jpg$' > $DIR_COMPRIMIR/nombresValidosA.txt
 
-        #generar un archivo comprimido tar.gz con todos los archivos anteriores y todas las imagenes procesadas
-        tar -czvf compartir/datasets/comprimir.tar.gz $DIR_COMPRIMIR/nombres.txt $DIR_COMPRIMIR/nombresValidos.txt $DIR_COMPRIMIR/nombresValidosA.txt $DIR_PROCESADAS/*.jpg
+        # copiar las imagenes procesadas a un directorio para comprimir
+        cp $DIR_PROCESADAS/*.jpg $DIR_COMPRIMIR
 
-        #borrar archivos temporales
-        rm $DIR_COMPRIMIR/nombres.txt $DIR_COMPRIMIR/nombresValidos.txt $DIR_COMPRIMIR/nombresValidosA.txt
+        #generar un archivo comprimido tar.gz con todos los archivos anteriores y todas las imagenes procesadas
+        tar -czvf compartir/archivo_final.tar.gz -C $DIR_COMPRIMIR .
+
+        #borrar todos los archivos creados y las imagenes copiadas
+        rm $DIR_COMPRIMIR/*.txt $DIR_COMPRIMIR/*.jpg
+        #borrar todo el contenido del directorio de imagenes procesadas
+        rm $DIR_PROCESADAS/*.jpg
     fi
 }
 
