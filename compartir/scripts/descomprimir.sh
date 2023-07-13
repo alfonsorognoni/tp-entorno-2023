@@ -2,6 +2,81 @@
 
 RUTA_DATASETS=$(pwd)compartir/datasets/
 
+menu_descomprimir () {
+    # Obtener la lista de archivos existentes en el directorio actual
+    archivos_gzip=$(ls ${RUTA_DATASETS}imagenes*.tar.gz)
+    archivos_verificacion=$(ls ${RUTA_DATASETS}suma*.txt)
+    zip_seleccionado=""
+    verificacion_seleccionada=""
+
+    # Contar el número de archivos
+    num_zips=$(ls ${RUTA_DATASETS}imagenes*.tar.gz | wc -l)
+    num_sumas=$(ls ${RUTA_DATASETS}suma*.txt | wc -l)
+
+    # Variable para mantener el índice del archivo seleccionado
+    indice=0
+
+    # Bucle para mostrar la lista y permitir la navegación
+    while true; do
+        clear  # Limpiar la pantalla
+        echo "Archivos:"
+        echo "---------"
+        if [[ $zip_seleccionado == "" ]]; then
+            num_archivos=$num_zips
+            archivos=$archivos_gzip
+        else
+            echo "Archivo gzip seleccionado: $zip_seleccionado"
+            num_archivos=$num_sumas
+            archivos=$archivos_verificacion
+        fi
+        
+        # Mostrar la lista de archivos con resaltado en el archivo seleccionado
+        for ((i=0; i<num_archivos; i++)); do
+            if [ $i -eq $indice ]; then
+                echo "-> $(echo "$archivos" | sed -n "$((i+1))p")"
+            else
+                echo "   $(echo "$archivos" | sed -n "$((i+1))p")"
+            fi
+        done
+
+        echo "---------"
+        echo "Utilice las teclas arriba y abajo para navegar. Presione Enter para seleccionar el archivo."
+
+        # Leer la entrada del usuario
+        read -s -n 1 tecla
+
+        # Manejar la entrada del usuario
+        case "$tecla" in
+            "A")  # Flecha arriba
+                if [ $indice -gt 0 ]; then
+                    ((indice--))
+                fi
+                ;;
+            "B")  # Flecha abajo
+                if [ $indice -lt $((num_archivos-1)) ]; then
+                    ((indice++))
+                fi
+                ;;
+            "")  # Enter
+                # Obtener el nombre del archivo seleccionado
+                if [[ $zip_seleccionado == "" ]]; then
+                    zip_seleccionado=$(echo "$archivos" | sed -n "$((indice+1))p")
+                else
+                    verificacion_seleccionada=$(echo "$archivos" | sed -n "$((indice+1))p")
+                fi
+
+                # Realizar acciones adicionales con el archivo seleccionado
+                if [[ $zip_seleccionado != "" && $verificacion_seleccionada != "" ]]; then
+                    descomprimir $zip_seleccionado $verificacion_seleccionada
+                    break
+                fi
+
+                # break  # Salir del bucle
+                # ;;
+        esac
+    done
+}
+
 descomprimir() {
     #Valida que la cantidad de argumentos ingresada sea 2
     if [[ $# -ne 2 ]]; then
@@ -24,7 +99,9 @@ descomprimir() {
         exit 5
     else
         #Compara la suma de verificación que se encuentra en el archivo del primer argumento con la del segundo argumento
-        if [[ $(echo $(md5sum $1) | cut -d ' ' -f 1) == $(cat $2) ]]; then
+        # echo $(md5sum $1) | cut -d ' ' -f 1
+        # cat $2 | cut -d ' ' -f 1
+        if [[ $(echo $(md5sum $1) | cut -d ' ' -f 1) == $(cat $2 | cut -d ' ' -f 1) ]]; then
             echo "La suma de verificación proporcionada coincide. Descomprimiendo..."
             mkdir -p ${RUTA_DATASETS}imagenesDescomprimidas #Crea un directorio donde se guardará el archivo descomprimido
             tar -xvf ${RUTA_DATASETS}imagenes.tar.gz -C ${RUTA_DATASETS}imagenesDescomprimidas #Descomprime el archivo
@@ -50,9 +127,10 @@ generar_menu() {
 
         case $option in
             1)
-                read -p "Ingrese el archivo de imágenes comprimidas que desea descomprimir." ARCHIVO
-			    read -p "Ingrese el archivo de texto con suma de verificación." SUMA_VERIFICACION
-			    descomprimir $ARCHIVO $SUMA_VERIFICACION
+                menu_descomprimir
+                # read -p "Ingrese el archivo de imágenes comprimidas que desea descomprimir." ARCHIVO
+			    # read -p "Ingrese el archivo de texto con suma de verificación." SUMA_VERIFICACION
+			    # descomprimir $ARCHIVO $SUMA_VERIFICACION
 			    ;;
             2) exit ;;
             *) echo "Opción inválida" ;;
